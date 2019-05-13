@@ -20,6 +20,10 @@ import butterknife.ButterKnife;
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHolder> {
     List<Project> projects;
 
+    public ProjectAdapter(List<Project> projects) {
+        this.projects = projects;
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,5 +63,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
     }
+
 }

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
-import androidx.fragment.app.FragmentActivity;
 
 import com.escom.topsecret.Entities.User;
 import com.escom.topsecret.Utils.SessionManagement;
@@ -30,7 +29,8 @@ import butterknife.OnTextChanged;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = LoginActivity.class.getName();
+    private static final String TAG = "LoginActivity";
+    
     private BiometricPrompt.PromptInfo promptInfo;
 
     private SessionManagement sessionManagement;
@@ -66,21 +66,14 @@ public class LoginActivity extends AppCompatActivity {
     @BindString(R.string.errorPassword)
     String errorPassword;
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        checkAccount();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        checkAccount();
+        sessionManagement = new SessionManagement(getApplicationContext());
+        gson = new Gson();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -116,8 +109,9 @@ public class LoginActivity extends AppCompatActivity {
                 user = new User();
                 user.setEmail(emailText);
                 sessionManagement.setUserData(gson.toJson(user));
-                startActivity(new Intent(getApplicationContext(), SessionActivity.class));
             }
+
+            startActivity(new Intent(getApplicationContext(), SessionActivity.class));
         }
     }
 
@@ -161,38 +155,48 @@ public class LoginActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void checkAccount() {
-        sessionManagement = new SessionManagement(getApplicationContext());
         String userData = sessionManagement.getUserData();
-        gson = new Gson();
+
         if (userData.equals("")) {
             ;
         } else {
-            user = new Gson().fromJson(userData, User.class);
+            user = gson.fromJson(userData, User.class);
             email.setText(user.getEmail());
             fingerPrintDialogPrompt(user.getEmail()); //Execute dialogPrompt
         }
     }
 
+
+    /**
+     * Creates the fingerprint dialog
+     *
+     * @param subtitle
+     * Shows the subtitle as the user to log in.
+     */
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void fingerPrintDialogPrompt(String subtitle) {
 
         Log.d(TAG, "fingerPrintDialogPrompt: no sirve");
         Executor newExecutor = Executors.newSingleThreadExecutor();
         BiometricCallback biometricCallback = new BiometricCallback();
-        FragmentActivity activity = this;
 
-        final BiometricPrompt myBiometricPrompt = new BiometricPrompt(activity, newExecutor, biometricCallback);
+        final BiometricPrompt myBiometricPrompt = new BiometricPrompt(this, newExecutor, biometricCallback);
 
-        promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle(fingerprintDialogTitle)
-                .setSubtitle(subtitle)
-                .setDescription(fingerprintDialogDescription)
-                .setNegativeButtonText(fingerprintDialogNegativeText)
-                .build();
+        if(promptInfo == null){
+            promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle(fingerprintDialogTitle)
+                    .setSubtitle(subtitle)
+                    .setDescription(fingerprintDialogDescription)
+                    .setNegativeButtonText(fingerprintDialogNegativeText)
+                    .build();
+        }
 
         myBiometricPrompt.authenticate(promptInfo);
     }
 
+    /**
+     * Handles the fingerprint callbacks.
+     */
     private class BiometricCallback extends BiometricPrompt.AuthenticationCallback {
         @Override
         public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {

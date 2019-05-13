@@ -10,23 +10,26 @@
     <string name="newAccount">No account yet?</string>
     <string name="newAccount2">Create one</string>
 
+    <!-- Error Strings-->
+
     <string name="errorMail">Enter a valid mail address</string>
     <string name="errorPassword">Between 6 and 16 alphanumeric characters</string>
 
 
-    <!--
-        String for Fingerprint UI
-     -->
+    <!--    String for Fingerprint UI    -->
 
     <string name="fingerTitle">Sign in</string>
     <string name="fingerDescription">Now you can sign in to your account using your fingerprint instead of u</string>
     <string name="fingerButton">Cancel</string>
     <string name="fingerHint">Touch the fingerprint sensor</string>
 
-    <!-- -->
+    <!-- Testing Recycler Row Layout -->
 
     <string name="testDate">14 Jul 19</string>
     <string name="testTitle">Project Namesadasdasdasda sd sd sd asdasdasd asdasdasdasdasd asdasd asasdasdasdd ads ads aasd</string>
     <string name="testArea">AREA</string>
+
+    <!-- Buttons Strings -->
+    <string name="sendButton">SEND</string>
 
 </resources>

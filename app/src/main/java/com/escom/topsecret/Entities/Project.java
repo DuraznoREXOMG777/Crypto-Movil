@@ -1,5 +1,9 @@
 package com.escom.topsecret.Entities;
 
+/**
+ * Top Secret Research Project Entity
+ * It's the main object of the project.
+ */
 public class Project {
     private String title;
     private String area;

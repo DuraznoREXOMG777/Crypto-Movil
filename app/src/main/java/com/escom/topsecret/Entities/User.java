@@ -1,5 +1,8 @@
 package com.escom.topsecret.Entities;
 
+/**
+ * User Login Entity
+ */
 public class User {
     private String email;
     private String fullName;

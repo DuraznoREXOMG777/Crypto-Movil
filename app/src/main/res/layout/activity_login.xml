@@ -93,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:gravity="center"
-                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 android:text="@string/newAccount"/>
 
             <TextView
@@ -104,7 +105,7 @@
                 android:layout_marginBottom="24dp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textColor="@color/primary"
                 android:text="@string/newAccount2"/>
 
