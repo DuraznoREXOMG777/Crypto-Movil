@@ -1,4 +1,4 @@
-package com.escom.topsecret.Entities;
+package com.escom.topsecret.entities;
 
 /**
  * Top Secret Research Project Entity

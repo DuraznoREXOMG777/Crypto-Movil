@@ -1,4 +1,4 @@
-package com.escom.topsecret.Utils;
+package com.escom.topsecret.utils;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.escom.topsecret.Entities.Project;
+import com.escom.topsecret.entities.Project;
 import com.escom.topsecret.R;
 
 import java.util.List;
@@ -27,9 +27,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item,  parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item, parent, false));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.escom.topsecret.Utils;
+package com.escom.topsecret.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

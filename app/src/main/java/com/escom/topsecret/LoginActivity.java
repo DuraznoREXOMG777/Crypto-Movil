@@ -11,8 +11,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 
-import com.escom.topsecret.Entities.User;
-import com.escom.topsecret.Utils.SessionManagement;
+import com.escom.topsecret.entities.User;
+import com.escom.topsecret.utils.SessionManagement;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -30,7 +30,7 @@ import butterknife.OnTextChanged;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
-    
+
     private BiometricPrompt.PromptInfo promptInfo;
 
     private SessionManagement sessionManagement;
@@ -122,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
     @OnTextChanged({R.id.et_email, R.id.et_password})
     public void textChanged(CharSequence charSequence) {
 
-        String text = String.valueOf(charSequence);
         emailText = this.email.getText().toString();
         passwordText = this.password.getText().toString();
 
@@ -157,9 +156,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkAccount() {
         String userData = sessionManagement.getUserData();
 
-        if (userData.equals("")) {
-            ;
-        } else {
+        if (!userData.equals("")) {
             user = gson.fromJson(userData, User.class);
             email.setText(user.getEmail());
             fingerPrintDialogPrompt(user.getEmail()); //Execute dialogPrompt
@@ -199,20 +196,9 @@ public class LoginActivity extends AppCompatActivity {
      */
     private class BiometricCallback extends BiometricPrompt.AuthenticationCallback {
         @Override
-        public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-            super.onAuthenticationError(errorCode, errString);
-        }
-
-        @Override
         public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-            super.onAuthenticationSucceeded(result);
             startActivity(new Intent(getApplicationContext(), SessionActivity.class));
         }
 
-
-        @Override
-        public void onAuthenticationFailed() {
-            super.onAuthenticationFailed();
-        }
     }
 }

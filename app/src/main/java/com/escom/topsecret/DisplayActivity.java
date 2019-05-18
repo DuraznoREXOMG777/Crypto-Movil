@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.escom.topsecret.Entities.Project;
-import com.escom.topsecret.Utils.Constants;
+import com.escom.topsecret.entities.Project;
+import com.escom.topsecret.utils.Constants;
 import com.google.gson.Gson;
 
 import butterknife.BindView;

@@ -1,20 +1,18 @@
 package com.escom.topsecret;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
-
-import com.escom.topsecret.Entities.Project;
-import com.escom.topsecret.Utils.Constants;
-import com.escom.topsecret.Utils.ProjectAdapter;
-import com.escom.topsecret.Utils.RecyclerTouchListener;
+import com.escom.topsecret.entities.Project;
+import com.escom.topsecret.utils.Constants;
+import com.escom.topsecret.utils.ProjectAdapter;
+import com.escom.topsecret.utils.RecyclerTouchListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -31,15 +29,13 @@ public class SessionActivity extends AppCompatActivity {
     private ProjectAdapter projectAdapter;
     private List<Project> projects;
 
-    private Gson gson;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
         ButterKnife.bind(this);
 
-        gson = new Gson();
+        Gson gson = new Gson();
 
         projects = new ArrayList<>();
 
@@ -51,19 +47,12 @@ public class SessionActivity extends AppCompatActivity {
         projectAdapter = new ProjectAdapter(projects);
         recyclerView.setAdapter(projectAdapter);
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(SessionActivity.this, DisplayActivity.class);
-                intent.putExtra(Constants.PROJECT, gson.toJson(projects.get(position)));
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), (view, position) -> {
+            Intent intent = new Intent(SessionActivity.this, DisplayActivity.class);
+            intent.putExtra(Constants.PROJECT, gson.toJson(projects.get(position)));
+            startActivity(intent);
         }));
+        
         populateRecyclerView();
 
     }
