@@ -2,6 +2,7 @@ package com.escom.topsecret;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -10,9 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.escom.topsecret.entities.Project;
+import com.escom.topsecret.entities.User;
 import com.escom.topsecret.utils.Constants;
 import com.escom.topsecret.utils.ProjectAdapter;
 import com.escom.topsecret.utils.RecyclerTouchListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -28,6 +33,8 @@ public class SessionActivity extends AppCompatActivity {
 
     private ProjectAdapter projectAdapter;
     private List<Project> projects;
+    private FirebaseAuth mAuth;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,12 @@ public class SessionActivity extends AppCompatActivity {
 
         projects = new ArrayList<>();
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                updateToken(task.getResult().getToken());
+            }
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -52,9 +65,41 @@ public class SessionActivity extends AppCompatActivity {
             intent.putExtra(Constants.PROJECT, gson.toJson(projects.get(position)));
             startActivity(intent);
         }));
-        
+
         populateRecyclerView();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(mAuth.getCurrentUser() == null){
+            Intent intent = new Intent(this, LoginActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+        }
+    }
+
+    private void updateToken(String token) {
+        String email = mAuth.getCurrentUser().getEmail();
+        User user = new User();
+        user.setEmail(email);
+        user.setToken(token);
+        user.setFullname("Antonio Lopez Higuera");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("User")
+                .document(token)
+                .set(user)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Actualizado", Toast.LENGTH_SHORT).show();
+                    }
+                    task.getResult();
+                });
     }
 
     private void populateRecyclerView() {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "638451540033",
+    "firebase_url": "https://secret-sharing-4e3b5.firebaseio.com",
+    "project_id": "secret-sharing-4e3b5",
+    "storage_bucket": "secret-sharing-4e3b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638451540033:android:ab372eac02dd3bce",
+        "android_client_info": {
+          "package_name": "com.escom.topsecret"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638451540033-cu8k3d1b4etkqfmgfsst6rf1lp6qvj2g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.escom.topsecret",
+            "certificate_hash": "96e5bb8b4edbbe90c4316a4dcae404f0b36aba97"
+          }
+        },
+        {
+          "client_id": "638451540033-oujthapcppvk8hl3h4if0te4bp4dtj4v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO8XCiD1v3h6oueW8cH6NzRJg_QfVp6jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638451540033-oujthapcppvk8hl3h4if0te4bp4dtj4v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

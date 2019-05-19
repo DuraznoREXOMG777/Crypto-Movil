@@ -9,6 +9,7 @@
         android:name="android.hardware.fingerprint"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
@@ -44,7 +45,7 @@
         </activity>
 
         <service
-            android:name=".java.MyFirebaseMessagingService"
+            android:name=".services.FirebaseNotifications"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

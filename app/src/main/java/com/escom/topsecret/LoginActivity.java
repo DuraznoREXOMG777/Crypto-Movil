@@ -13,8 +13,12 @@ import androidx.biometric.BiometricPrompt;
 
 import com.escom.topsecret.entities.User;
 import com.escom.topsecret.utils.SessionManagement;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.util.concurrent.Executor;
@@ -39,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String emailText;
     private String passwordText;
+
+    private FirebaseAuth mAuth;
 
     @BindView(R.id.et_email)
     TextInputEditText email;
@@ -74,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
         sessionManagement = new SessionManagement(getApplicationContext());
         gson = new Gson();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -83,28 +90,15 @@ public class LoginActivity extends AppCompatActivity {
         checkAccount();
     }
 
-    @OnFocusChange({R.id.et_email, R.id.et_password})
-    public void placeHolderTrick(boolean focus, TextInputEditText textInputEditText) {
-        if (focus) {
-            if (textInputEditText == password) {
-                textInputEditText.setHint(hPassword);
-            } else {
-                textInputEditText.setHint(hEmail);
-            }
-        } else {
-            textInputEditText.setHint("");
-        }
-    }
-
     @OnClick(R.id.btn_login)
     public void login() {
 
 
-        if (!validate()) {
+        if (!validateFields()) {
             return;
         }
 
-        if (serverValidate()) {
+        mAuth.signInWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(task -> {
             if (user == null) {
                 user = new User();
                 user.setEmail(emailText);
@@ -112,28 +106,10 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             startActivity(new Intent(getApplicationContext(), SessionActivity.class));
-        }
+        });
     }
 
-    private boolean serverValidate() {
-        return true;
-    }
-
-    @OnTextChanged({R.id.et_email, R.id.et_password})
-    public void textChanged(CharSequence charSequence) {
-
-        emailText = this.email.getText().toString();
-        passwordText = this.password.getText().toString();
-
-        if (String.valueOf(charSequence).hashCode() == emailText.hashCode()) {
-            tilEmail.setError(null);
-        } else if (String.valueOf(charSequence).hashCode() == passwordText.hashCode()) {
-            tilPassword.setError(null);
-        }
-    }
-
-
-    private boolean validate() {
+    private boolean validateFields() {
         boolean valid = true;
 
         Log.d(TAG, String.format("Email: %s, Password: %s", email, password));
@@ -164,11 +140,37 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @OnTextChanged({R.id.et_email, R.id.et_password})
+    public void textChanged(CharSequence charSequence) {
+
+        emailText = this.email.getText().toString();
+        passwordText = this.password.getText().toString();
+
+        if (String.valueOf(charSequence).hashCode() == emailText.hashCode()) {
+            tilEmail.setError(null);
+        } else if (String.valueOf(charSequence).hashCode() == passwordText.hashCode()) {
+            tilPassword.setError(null);
+        }
+    }
+
+    @OnFocusChange({R.id.et_email, R.id.et_password})
+    public void placeHolderTrick(boolean focus, TextInputEditText textInputEditText) {
+        if (focus) {
+            if (textInputEditText == password) {
+                textInputEditText.setHint(hPassword);
+            } else {
+                textInputEditText.setHint(hEmail);
+            }
+        } else {
+            textInputEditText.setHint("");
+        }
+    }
+
+
     /**
      * Creates the fingerprint dialog
      *
-     * @param subtitle
-     * Shows the subtitle as the user to log in.
+     * @param subtitle Shows the subtitle as the user to log in.
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void fingerPrintDialogPrompt(String subtitle) {
@@ -179,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final BiometricPrompt myBiometricPrompt = new BiometricPrompt(this, newExecutor, biometricCallback);
 
-        if(promptInfo == null){
+        if (promptInfo == null) {
             promptInfo = new BiometricPrompt.PromptInfo.Builder()
                     .setTitle(fingerprintDialogTitle)
                     .setSubtitle(subtitle)
@@ -195,10 +197,10 @@ public class LoginActivity extends AppCompatActivity {
      * Handles the fingerprint callbacks.
      */
     private class BiometricCallback extends BiometricPrompt.AuthenticationCallback {
+
         @Override
         public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
             startActivity(new Intent(getApplicationContext(), SessionActivity.class));
         }
-
     }
 }

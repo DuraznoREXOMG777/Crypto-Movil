@@ -5,53 +5,46 @@ package com.escom.topsecret.entities;
  */
 public class User {
     private String email;
-    private String fullName;
-    private String password;
+    private String fullname;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     private boolean loginOption;
 
     public User(String email, String fullName, String password, boolean loginOption) {
         this.email = email;
-        this.fullName = fullName;
-        this.password = password;
+        this.fullname = fullName;
         this.loginOption = loginOption;
     }
 
     public User() {
         email = "";
-        fullName = "";
-        password = "";
+        fullname = "";
         loginOption = false;
+        token = "";
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean isLoginOption() {
-        return loginOption;
+    public String getFullname() {
+        return fullname;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setLoginOption(boolean loginOption) {
-        this.loginOption = loginOption;
-    }
 }

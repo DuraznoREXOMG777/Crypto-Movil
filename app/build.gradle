@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.sonarqube'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -31,8 +32,8 @@ android {
     }
 }
 
-sonarqube{
-    properties{
+sonarqube {
+    properties {
         property "sonar.projectName", "TopSecret"
         property "sonar.projectKey", "TopSecret"
         property "sonar.host.url", "http://localhost:9000"
@@ -63,6 +64,9 @@ dependencies {
 
     //Firebase Cloud Messaging
     implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-firestore:19.0.0'
+    implementation 'com.google.firebase:firebase-database:17.0.0'
 
 
     testImplementation 'junit:junit:4.12'
